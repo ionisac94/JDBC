@@ -1,6 +1,7 @@
 package dao;
 
 import models.EmplProj;
+import models.Employee;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -69,7 +70,26 @@ public class EmplProjImpl implements EmplProjDao {
 
 	@Override
 	public Optional<EmplProj> getById(Integer id) {
-		return Optional.empty();
+		EmplProj emplProj = new EmplProj();
+		String sql = "SELECT * from empl_proj WHERE id = ?";
+
+		LOGGER.log(Level.INFO, "About fetching one record from DB");
+
+		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+			preparedStatement.setLong(1, id);
+
+			try (ResultSet resultSet = preparedStatement.executeQuery()) {
+
+				while (resultSet.next()) {
+					emplProj.setProjectId(resultSet.getInt("employeeId"));
+					emplProj.setEmployeeId(resultSet.getInt("projectId"));
+				}
+			}
+		} catch (SQLException e) {
+			LOGGER.log(Level.INFO, "An error occurred during DB call: ==> " + e);
+		}
+
+		return Optional.of(emplProj);
 	}
 
 	@Override

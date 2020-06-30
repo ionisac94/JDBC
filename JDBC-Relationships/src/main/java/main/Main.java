@@ -50,7 +50,9 @@ public class Main {
 			EmplProj emplProj = new EmplProj(1, 1);
 
 //			addEmplProj(connection, emplProj);
-			getAllEmplProj(connection);
+//			getAllEmplProj(connection);
+
+			getEmplProjById(connection);
 
 			//project
 //			Project project = new Project(3, "Orange");
@@ -80,6 +82,13 @@ public class Main {
 //
 //		System.out.println("driverVersion: " + driverVersion);
 
+	}
+
+	private static void getEmplProjById(Connection connection) {
+		EmplProjService emplProjService = new EmplProjService(connection);
+		Optional<EmplProj> emplProjById = emplProjService.getEmplProjById(2);
+
+		System.out.println(emplProjById);
 	}
 
 
