@@ -107,7 +107,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
 	}
 
 	@Override
-	public void update(Employee employee, Integer id) {
+	public void update(Employee employee) {
 
 		LOGGER.log(Level.INFO, "About updating one record in DB");
 
@@ -119,7 +119,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
 			preparedStatement.setString(2, employee.getLastName());
 			preparedStatement.setDate(3, employee.getBirthday());
 			preparedStatement.setInt(4, employee.getAddressId());
-			preparedStatement.setInt(5, id);
+			preparedStatement.setInt(5, employee.getId());
 
 			preparedStatement.executeUpdate();
 

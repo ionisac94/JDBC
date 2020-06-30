@@ -1,5 +1,6 @@
 package dao;
 
+import models.Employee;
 import models.Project;
 
 import java.sql.Connection;
@@ -25,12 +26,10 @@ public class ProjectDaoImpl implements ProjectDao {
 
 	@Override
 	public void add(Project project) {
+		String query = "INSERT INTO project VALUES (?, ?)";
 
 		LOGGER.log(Level.INFO, "About inserting a new record in DB");
 
-		Project newProject = new Project();
-
-		String query = "INSERT INTO project VALUES (?, ?)";
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
@@ -47,28 +46,25 @@ public class ProjectDaoImpl implements ProjectDao {
 
 	@Override
 	public List<Project> getAll() {
+		String query = "SELECT * FROM project";
 
 		LOGGER.log(Level.INFO, "About fetching data from DB");
 
 		List<Project> projects = new ArrayList<>();
 
-		String query = "SELECT * FROM project";
-
 		try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
 			try (ResultSet resultSet = preparedStatement.executeQuery()) {
-				Project project = new Project();
 				while (resultSet.next()) {
-					project.setId(resultSet.getInt(1));
-					project.setTitle(resultSet.getString(2));
-
+					Project project = new Project();
+					project.setId(resultSet.getInt("id"));
+					project.setTitle(resultSet.getString("title"));
 					projects.add(project);
 				}
 			}
 		} catch (SQLException e) {
 			LOGGER.log(Level.INFO, "An error occurred during DB call: ==> " + e);
 		}
-
 		LOGGER.log(Level.INFO, "From DB was fetched " + projects.size() + " projects");
 
 		return projects;
@@ -76,16 +72,61 @@ public class ProjectDaoImpl implements ProjectDao {
 
 	@Override
 	public Optional<Project> getById(Integer id) {
-		return Optional.empty();
-	}
+		String sql = "SELECT * from project WHERE id = ?";
+
+		Project project = new Project();
+
+		LOGGER.log(Level.INFO, "About fetching one record from DB");
+
+		try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+			preparedStatement.setLong(1, id);
+
+			try (ResultSet resultSet = preparedStatement.executeQuery()) {
+				while (resultSet.next()) {
+					project.setId(resultSet.getInt("id"));
+					project.setTitle(resultSet.getString("title"));
+				}
+			}
+		} catch (SQLException e) {
+			LOGGER.log(Level.INFO, "An error occurred during DB call: ==> " + e);
+		}
+
+		return Optional.of(project);	}
 
 	@Override
-	public void update(Project project, Integer id) {
+	public void update(Project project) {
+		String query = "UPDATE project SET title=? WHERE id=?";
 
+		LOGGER.log(Level.INFO, "About updating one record in DB");
+
+		try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+			preparedStatement.setString(1, project.getTitle());
+			preparedStatement.setInt(2, project.getId());
+
+			preparedStatement.executeUpdate();
+
+		} catch (SQLException e) {
+			LOGGER.log(Level.INFO, "An error occurred during DB call: ==> " + e);
+		}
+		LOGGER.log(Level.INFO, "Updated one record from DB");
 	}
 
 	@Override
 	public void remove(Integer prjectId) {
 
+		LOGGER.log(Level.INFO, "About removing one record from DB");
+
+		String query = "DELETE FROM project WHERE id = ?";
+
+		try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+			preparedStatement.setInt(1, prjectId);
+
+			preparedStatement.executeUpdate();
+		} catch (SQLException e) {
+			LOGGER.log(Level.INFO, "An error occurred during DB call: ==> " + e);
+		}
+		LOGGER.log(Level.INFO, "Removed one record from DB");
 	}
 }

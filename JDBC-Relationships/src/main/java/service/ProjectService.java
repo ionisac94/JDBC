@@ -7,6 +7,7 @@ import models.Project;
 import java.sql.Connection;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static java.util.Objects.requireNonNull;
@@ -30,7 +31,22 @@ public class ProjectService {
 				.stream()
 				.sorted(Comparator.comparingInt(Project::getId))
 				.collect(Collectors.toList());
-
 		all.forEach(System.out::println);
+	}
+
+	public void getProjectById(Integer projId){
+		ProjectDao projectDao = new ProjectDaoImpl(connection);
+		Optional<Project> byId = projectDao.getById(projId);
+		System.out.println(byId);
+	}
+
+	public void updateProject(Project project){
+		ProjectDao projectDao = new ProjectDaoImpl(connection);
+		projectDao.update(project);
+	}
+
+	public void deleteProject(Integer id){
+		ProjectDao projectDao = new ProjectDaoImpl(connection);
+		projectDao.remove(id);
 	}
 }

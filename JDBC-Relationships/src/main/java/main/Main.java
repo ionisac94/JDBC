@@ -12,6 +12,7 @@ import service.ProjectService;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
@@ -43,30 +44,30 @@ public class Main {
 //			addEmployee(connection, employee);
 //			getAllEmployees(connection);
 //			getOneEmployee(connection, id);
-//			updateOneEmployee(connection, employee, employee.getId());
+//			updateOneEmployee(connection, employee);
 //			removeOneEmployee(connection, employee.getId());
 
 //			emplproj
-			EmplProj emplProj = new EmplProj(1, 1);
+//			EmplProj emplProj = new EmplProj(2, 2);
 
 //			addEmplProj(connection, emplProj);
 //			getAllEmplProj(connection);
-
-			getEmplProjById(connection);
+//			getEmplProjById(connection);
+//			updateEmplProj(connection, emplProj);
+//			removeEmplProj(connection, emplProj);
 
 			//project
-//			Project project = new Project(3, "Orange");
+//			Project project = new Project(3, "Moldcell");
 
 //			addProject(connection, project);
 //			getAllProjects(connection);
-//			getOneEmployee(connection, id);
-//			updateOneEmployee(connection, employee, employee.getId());
-//			removeOneEmployee(connection, employee.getId());
+//			getProjectById(connection, project.getId());
+//			updateOneProject(connection, project);
+//			removeOneProject(connection, project.getId());
 
 		} catch (SQLException e) {
 			System.out.println("Ups :)");
 		}
-
 
 //		----------
 
@@ -84,13 +85,23 @@ public class Main {
 
 	}
 
+	//	EmplProj
+	private static void removeEmplProj(Connection connection, EmplProj emplProj) {
+		EmplProjService emplProjService = new EmplProjService(connection);
+		emplProjService.deleteEmplProj(connection, emplProj);
+	}
+
+	private static void updateEmplProj(Connection connection, EmplProj emplProj) {
+		EmplProjService emplProjService = new EmplProjService(connection);
+		emplProjService.updateEmplProj(connection, emplProj);
+	}
+
 	private static void getEmplProjById(Connection connection) {
 		EmplProjService emplProjService = new EmplProjService(connection);
-		Optional<EmplProj> emplProjById = emplProjService.getEmplProjById(2);
+		Optional<EmplProj> emplProjById = emplProjService.getEmplProjById(1, 1);
 
 		System.out.println(emplProjById);
 	}
-
 
 	private static void addEmplProj(Connection connection, EmplProj emplProj) {
 
@@ -107,58 +118,63 @@ public class Main {
 		emplProjService.gettAllEmplProj();
 	}
 
-
+//	Project
 	private static void addProject(Connection connection, Project project) {
 		LOGGER.log(Level.INFO, "Setting up a new project");
-
 		ProjectService projectService = new ProjectService(connection);
-
 		projectService.addProject(project);
 	}
 
 	private static void getAllProjects(Connection connection) {
 		LOGGER.log(Level.INFO, "Getting all projects");
-
 		ProjectService projectService = new ProjectService(connection);
-
 		projectService.getAllProjects();
 	}
 
+	public static void getProjectById(Connection connection, Integer projId){
+		ProjectService projectService = new ProjectService(connection);
+		projectService.getProjectById(projId);
+	}
+
+	private static void updateOneProject(Connection connection, Project project) {
+		ProjectService projectService = new ProjectService(connection);
+		projectService.updateProject(project);
+	}
+
+	private static void removeOneProject(Connection connection, Integer id) {
+		ProjectService projectService = new ProjectService(connection);
+		projectService.deleteProject(id);
+	}
+
+//	Employee
 	private static void addEmployee(Connection connection, Employee employee) {
-
 		EmployeeService employeeService = new EmployeeService(connection);
-
 		employeeService.addEmployee(employee);
-
 	}
 
 	private static void getAllEmployees(Connection connection) {
-
 		EmployeeService employeeService = new EmployeeService(connection);
 		List<Employee> allEmployees = employeeService.getAllEmployees();
-
 		allEmployees.forEach(System.out::println);
 	}
 
 	private static void getOneEmployee(Connection connection, Integer id) {
-
 		EmployeeService employeeService = new EmployeeService(connection);
 		Optional<Employee> oneEmployee = employeeService.getOneEmployee(id);
-
 		System.out.println(oneEmployee);
 	}
 
-	private static void updateOneEmployee(Connection connection, Employee employee, Integer id) {
+	private static void updateOneEmployee(Connection connection, Employee employee) {
 		EmployeeService employeeService = new EmployeeService(connection);
-		employeeService.updateOneEmployee(employee, id);
+		employeeService.updateOneEmployee(employee);
 	}
 
 	private static void removeOneEmployee(Connection connection, Integer id) {
-
 		EmployeeService employeeService = new EmployeeService(connection);
 		employeeService.removeOneEmployee(id);
 	}
 
+//	Address
 	private static void updateOneAddress(Connection connection, Address address, Integer id) {
 		AddressService addressService = new AddressService(connection);
 		addressService.updateOneAddress(address, address.getId());
@@ -173,7 +189,6 @@ public class Main {
 	private static void getAllAddresses(Connection connection) {
 		AddressService addressService = new AddressService(connection);
 		List<Address> allAddresses = addressService.getAllAddresses();
-
 		allAddresses.forEach(System.out::println);
 	}
 

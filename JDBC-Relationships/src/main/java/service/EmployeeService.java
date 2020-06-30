@@ -45,9 +45,9 @@ public class EmployeeService {
 		return employeeDao.getById(id);
 	}
 
-	public void updateOneEmployee(Employee employee, Integer id) {
+	public void updateOneEmployee(Employee employee) {
 		EmployeeDao employeeDaoDao = new EmployeeDaoImpl(connection);
-		employeeDaoDao.update(employee, id);
+		employeeDaoDao.update(employee);
 	}
 
 	public void removeOneEmployee(Integer id) {

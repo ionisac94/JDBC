@@ -13,7 +13,7 @@ public interface EmployeeDao {
 
 	Optional<Employee> getById(Integer id);
 
-	void update(Employee employee, Integer id);
+	void update(Employee employee);
 
 	void remove(Integer employeeId);
 }
