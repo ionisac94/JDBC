@@ -1,7 +1,7 @@
 package service;
 
 import dao.EmplProjDao;
-import dao.EmplProjImpl;
+import dao.EmplProjDaoImpl;
 import models.EmplProj;
 
 import java.sql.Connection;
@@ -20,12 +20,12 @@ public class EmplProjService {
 	}
 
 	public void addEmplProj(EmplProj emplProj) {
-		EmplProjDao emplProjDao = new EmplProjImpl(connection);
+		EmplProjDao emplProjDao = new EmplProjDaoImpl(connection);
 		emplProjDao.add(emplProj);
 	}
 
 	public void gettAllEmplProj() {
-		EmplProjDao emplProjDao = new EmplProjImpl(connection);
+		EmplProjDao emplProjDao = new EmplProjDaoImpl(connection);
 		List<EmplProj> all = emplProjDao.getAll();
 
 		List<EmplProj> collect = all.stream().collect(Collectors.toList());
@@ -33,11 +33,21 @@ public class EmplProjService {
 		collect.forEach(System.out::println);
 	}
 
-	public Optional<EmplProj> getEmplProjById(Integer id){
+	public Optional<EmplProj> getEmplProjById(Integer empId, Integer projId) {
 
-		EmplProjDao emplProjDao = new EmplProjImpl(connection);
+		EmplProjDao emplProjDao = new EmplProjDaoImpl(connection);
 
-		return emplProjDao.getById(id);
+		return emplProjDao.getByEmployeeIdAndProjectId(empId, projId);
+	}
+
+	public void updateEmplProj(Connection connection, EmplProj emplProj) {
+		EmplProjDao emplProjDao = new EmplProjDaoImpl(connection);
+		emplProjDao.update(emplProj);
+	}
+
+	public void deleteEmplProj(Connection connection, EmplProj emplProj) {
+		EmplProjDao emplProjDao = new EmplProjDaoImpl(connection);
+		emplProjDao.remove(emplProj);
 	}
 
 }

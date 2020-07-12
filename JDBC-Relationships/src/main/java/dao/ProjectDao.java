@@ -14,7 +14,7 @@ public interface ProjectDao {
 
 	Optional<Project> getById(Integer id);
 
-	void update(Project project, Integer id);
+	void update(Project project);
 
 	void remove(Integer projectId);
 }

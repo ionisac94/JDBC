@@ -11,9 +11,9 @@ public interface EmplProjDao {
 
 	List<EmplProj> getAll();
 
-	Optional<EmplProj> getById(Integer id);
+	Optional<EmplProj> getByEmployeeIdAndProjectId(Integer empId, Integer projId);
 
-	void update(EmplProj emplProj, Integer id);
+	void update(EmplProj emplProj);
 
-	void remove(Integer projectId);
+	void remove(EmplProj emplProj);
 }
