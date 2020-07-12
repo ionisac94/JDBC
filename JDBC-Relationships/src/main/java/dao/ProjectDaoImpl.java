@@ -1,6 +1,5 @@
 package dao;
 
-import models.Employee;
 import models.Project;
 
 import java.sql.Connection;
@@ -38,10 +37,10 @@ public class ProjectDaoImpl implements ProjectDao {
 
 			preparedStatement.executeUpdate();
 
+			LOGGER.log(Level.INFO, "Inserted a new record in DB");
 		} catch (SQLException e) {
-			LOGGER.log(Level.INFO, "An error occurred during DB call: ==> " + e);
+			LOGGER.log(Level.SEVERE, "An error occurred during DB call: ==> " + e);
 		}
-		LOGGER.log(Level.INFO, "Inserted a new record in DB");
 	}
 
 	@Override
@@ -61,12 +60,11 @@ public class ProjectDaoImpl implements ProjectDao {
 					project.setTitle(resultSet.getString("title"));
 					projects.add(project);
 				}
+				LOGGER.log(Level.INFO, "From DB was fetched " + projects.size() + " projects");
 			}
 		} catch (SQLException e) {
-			LOGGER.log(Level.INFO, "An error occurred during DB call: ==> " + e);
+			LOGGER.log(Level.SEVERE, "An error occurred during DB call: ==> " + e);
 		}
-		LOGGER.log(Level.INFO, "From DB was fetched " + projects.size() + " projects");
-
 		return projects;
 	}
 
@@ -88,10 +86,10 @@ public class ProjectDaoImpl implements ProjectDao {
 				}
 			}
 		} catch (SQLException e) {
-			LOGGER.log(Level.INFO, "An error occurred during DB call: ==> " + e);
+			LOGGER.log(Level.SEVERE, "An error occurred during DB call: ==> " + e);
 		}
-
-		return Optional.of(project);	}
+		return Optional.of(project);
+	}
 
 	@Override
 	public void update(Project project) {
@@ -104,12 +102,16 @@ public class ProjectDaoImpl implements ProjectDao {
 			preparedStatement.setString(1, project.getTitle());
 			preparedStatement.setInt(2, project.getId());
 
-			preparedStatement.executeUpdate();
+			int affectedRecords = preparedStatement.executeUpdate();
 
+			if (affectedRecords > 0) {
+				LOGGER.log(Level.INFO, "Updated one record in DB");
+			} else {
+				LOGGER.log(Level.INFO, "Updated zero records in DB");
+			}
 		} catch (SQLException e) {
-			LOGGER.log(Level.INFO, "An error occurred during DB call: ==> " + e);
+			LOGGER.log(Level.SEVERE, "An error occurred during DB call: ==> " + e);
 		}
-		LOGGER.log(Level.INFO, "Updated one record from DB");
 	}
 
 	@Override
@@ -123,10 +125,15 @@ public class ProjectDaoImpl implements ProjectDao {
 
 			preparedStatement.setInt(1, prjectId);
 
-			preparedStatement.executeUpdate();
+			int affectedRecords = preparedStatement.executeUpdate();
+
+			if (affectedRecords > 0) {
+				LOGGER.log(Level.INFO, "Removed one record in DB");
+			} else {
+				LOGGER.log(Level.INFO, "Removed zero records in DB");
+			}
 		} catch (SQLException e) {
-			LOGGER.log(Level.INFO, "An error occurred during DB call: ==> " + e);
+			LOGGER.log(Level.SEVERE, "An error occurred during DB call: ==> " + e);
 		}
-		LOGGER.log(Level.INFO, "Removed one record from DB");
 	}
 }

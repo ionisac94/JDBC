@@ -36,10 +36,11 @@ public class EmplProjDaoImpl implements EmplProjDao {
 			preparedStatement.setInt(2, emplProj.getProjectId());
 
 			preparedStatement.executeUpdate();
+
+			LOGGER.log(Level.INFO, "Inserted a new record in DB");
 		} catch (SQLException e) {
-			LOGGER.log(Level.INFO, "An error occurred during DB call: ==> " + e);
+			LOGGER.log(Level.SEVERE, "An error occurred during DB call: ==> " + e);
 		}
-		LOGGER.log(Level.INFO, "Inserted a new record in DB");
 	}
 
 	@Override
@@ -56,11 +57,12 @@ public class EmplProjDaoImpl implements EmplProjDao {
 					emplProj.setProjectId(resultSet.getInt(2));
 				}
 				emplProjs.add(emplProj);
+
+				LOGGER.log(Level.INFO, "From DB was fetched " + emplProjs.size() + " emplProjs");
 			}
 		} catch (SQLException e) {
-			LOGGER.log(Level.INFO, "An error occurred during DB call: ==> " + e);
+			LOGGER.log(Level.SEVERE, "An error occurred during DB call: ==> " + e);
 		}
-		LOGGER.log(Level.INFO, "From DB was fetched " + emplProjs.size() + " emplProjs");
 
 		return emplProjs;
 	}
@@ -84,7 +86,7 @@ public class EmplProjDaoImpl implements EmplProjDao {
 				}
 			}
 		} catch (SQLException e) {
-			LOGGER.log(Level.INFO, "An error occurred during DB call: ==> " + e);
+			LOGGER.log(Level.SEVERE, "An error occurred during DB call: ==> " + e);
 		}
 
 		return Optional.of(emplProj);
@@ -102,10 +104,11 @@ public class EmplProjDaoImpl implements EmplProjDao {
 			preparedStatement.setInt(2, emplProj.getProjectId());
 
 			preparedStatement.executeUpdate();
+
+			LOGGER.log(Level.INFO, "Updated one record in DB");
 		} catch (SQLException e) {
-			LOGGER.log(Level.INFO, "An error occurred during DB call: ==> " + e);
+			LOGGER.log(Level.SEVERE, "An error occurred during DB call: ==> " + e);
 		}
-		LOGGER.log(Level.INFO, "Updated one record in DB");
 	}
 
 	@Override
@@ -120,9 +123,10 @@ public class EmplProjDaoImpl implements EmplProjDao {
 			preparedStatement.setInt(2, emplProj.getProjectId());
 
 			preparedStatement.executeUpdate();
+
+			LOGGER.log(Level.INFO, "Updated one record in DB");
 		} catch (SQLException e) {
-			LOGGER.log(Level.INFO, "An error occurred during DB call: ==> " + e);
+			LOGGER.log(Level.SEVERE, "An error occurred during DB call: ==> " + e);
 		}
-		LOGGER.log(Level.INFO, "Updated one record in DB");
 	}
 }

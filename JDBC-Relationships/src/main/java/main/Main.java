@@ -38,14 +38,14 @@ public class Main {
 //			removeOneAddress(connection, idAddress);
 
 			//employees
-//			Integer id = 1;
-//			Employee employee = new Employee(4, "Daniela", "Ciuperca", new Date(1l), 3);
+			Integer id = 2;
+			Employee employee = new Employee(4, "Daniela", "Ciuperca", new Date(1l), 2);
 
 //			addEmployee(connection, employee);
 //			getAllEmployees(connection);
 //			getOneEmployee(connection, id);
 //			updateOneEmployee(connection, employee);
-//			removeOneEmployee(connection, employee.getId());
+			removeOneEmployee(connection, id);
 
 //			emplproj
 //			EmplProj emplProj = new EmplProj(2, 2);
@@ -160,7 +160,7 @@ public class Main {
 
 	private static void getOneEmployee(Connection connection, Integer id) {
 		EmployeeService employeeService = new EmployeeService(connection);
-		Optional<Employee> oneEmployee = employeeService.getOneEmployee(id);
+		Employee oneEmployee = employeeService.getOneEmployee(id);
 		System.out.println(oneEmployee);
 	}
 
@@ -182,7 +182,7 @@ public class Main {
 
 	private static void getOneAddress(Connection connection, Integer idAddress) {
 		AddressService addressService = new AddressService(connection);
-		Optional<Address> oneAddress = addressService.getOneAddress(idAddress);
+		Address oneAddress = addressService.getOneAddress(idAddress);
 		System.out.println(oneAddress);
 	}
 

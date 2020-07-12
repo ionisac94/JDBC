@@ -37,10 +37,11 @@ public class AddressDaoImpl implements AddressDao {
 			preparedStatement.setString(4, address.getStreet());
 			preparedStatement.setString(5, address.getPostCode());
 			preparedStatement.executeUpdate();
+
+			LOGGER.log(Level.INFO, "Inserted a new record in DB");
 		} catch (SQLException e) {
-			LOGGER.log(Level.INFO, "An error occurred during DB call: ==> " + e);
+			LOGGER.log(Level.SEVERE, "An error occurred during DB call: ==> " + e);
 		}
-		LOGGER.log(Level.INFO, "Inserted a new record in DB");
 	}
 
 	@Override
@@ -65,12 +66,10 @@ public class AddressDaoImpl implements AddressDao {
 					addressList.add(address);
 				}
 			}
+			LOGGER.log(Level.INFO, "From DB was fetched " + addressList.size() + " addresses");
 		} catch (SQLException ex) {
-			LOGGER.log(Level.INFO, "An error occurred during DB call: ==> " + ex);
+			LOGGER.log(Level.SEVERE, "An error occurred during DB call: ==> " + ex);
 		}
-
-		LOGGER.log(Level.INFO, "From DB was fetched " + addressList.size() + " addresses");
-
 		return addressList;
 	}
 
@@ -94,7 +93,7 @@ public class AddressDaoImpl implements AddressDao {
 				}
 			}
 		} catch (SQLException ex) {
-			LOGGER.log(Level.INFO, "An error occurred during DB call: ==> " + ex);
+			LOGGER.log(Level.SEVERE, "An error occurred during DB call: ==> " + ex);
 		}
 
 		return Optional.of(address);
@@ -114,13 +113,16 @@ public class AddressDaoImpl implements AddressDao {
 			preparedStatement.setString(3, address.getStreet());
 			preparedStatement.setString(4, address.getPostCode());
 			preparedStatement.setLong(5, id);
+			int affectedRecords = preparedStatement.executeUpdate();
 
-			preparedStatement.executeUpdate();
-
+			if (affectedRecords > 0) {
+				LOGGER.log(Level.INFO, "Updated one record in DB");
+			} else {
+				LOGGER.log(Level.INFO, "Updated zero records in DB");
+			}
 		} catch (SQLException e) {
-			LOGGER.log(Level.INFO, "An error occurred during DB call: ==> " + e);
+			LOGGER.log(Level.SEVERE, "An error occurred during DB call: ==> " + e);
 		}
-		LOGGER.log(Level.INFO, "Updated one record from DB");
 	}
 
 	@Override
@@ -134,10 +136,15 @@ public class AddressDaoImpl implements AddressDao {
 
 			preparedStatement.setInt(1, id);
 
-			preparedStatement.executeUpdate();
+			int affectedRecords = preparedStatement.executeUpdate();
+
+			if (affectedRecords > 0) {
+				LOGGER.log(Level.INFO, "Removed one record from DB");
+			} else {
+				LOGGER.log(Level.INFO, "Removed zero records from DB");
+			}
 		} catch (SQLException e) {
-			LOGGER.log(Level.INFO, "An error occurred during DB call: ==> " + e);
+			LOGGER.log(Level.SEVERE, "An error occurred during DB call: ==> " + e);
 		}
-		LOGGER.log(Level.INFO, "Removed one record from DB");
 	}
 }

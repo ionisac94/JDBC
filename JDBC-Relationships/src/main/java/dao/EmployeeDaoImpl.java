@@ -37,13 +37,12 @@ public class EmployeeDaoImpl implements EmployeeDao {
 			preparedStatement.setString(3, employee.getLastName());
 			preparedStatement.setDate(4, employee.getBirthday());
 			preparedStatement.setInt(5, employee.getAddressId());
-
 			preparedStatement.executeUpdate();
 
+			LOGGER.log(Level.INFO, "Inserted a new record in DB");
 		} catch (SQLException e) {
-			LOGGER.log(Level.INFO, "An error occurred during DB call: ==> " + e);
+			LOGGER.log(Level.SEVERE, "An error occurred during DB call: ==> " + e);
 		}
-		LOGGER.log(Level.INFO, "Inserted a new record in DB");
 	}
 
 	@Override
@@ -68,14 +67,12 @@ public class EmployeeDaoImpl implements EmployeeDao {
 					employee.setAddressId(resultSet.getInt("addressId"));
 
 					employees.add(employee);
+					LOGGER.log(Level.INFO, "From DB was fetched " + employees.size() + " employees");
 				}
 			}
 		} catch (SQLException ex) {
-			LOGGER.log(Level.INFO, "An error occurred during DB call: ==> " + ex);
+			LOGGER.log(Level.SEVERE, "An error occurred during DB call: ==> " + ex);
 		}
-
-		LOGGER.log(Level.INFO, "From DB was fetched " + employees.size() + " employees");
-
 		return employees;
 	}
 
@@ -100,9 +97,8 @@ public class EmployeeDaoImpl implements EmployeeDao {
 				}
 			}
 		} catch (SQLException e) {
-			LOGGER.log(Level.INFO, "An error occurred during DB call: ==> " + e);
+			LOGGER.log(Level.SEVERE, "An error occurred during DB call: ==> " + e);
 		}
-
 		return Optional.of(employee);
 	}
 
@@ -120,13 +116,17 @@ public class EmployeeDaoImpl implements EmployeeDao {
 			preparedStatement.setDate(3, employee.getBirthday());
 			preparedStatement.setInt(4, employee.getAddressId());
 			preparedStatement.setInt(5, employee.getId());
+			int affectedRecords = preparedStatement.executeUpdate();
 
-			preparedStatement.executeUpdate();
+			if (affectedRecords > 0) {
+				LOGGER.log(Level.INFO, "Updated one record in DB");
+			} else {
+				LOGGER.log(Level.INFO, "Updated zero records in DB");
+			}
 
 		} catch (SQLException e) {
-			LOGGER.log(Level.INFO, "An error occurred during DB call: ==> " + e);
+			LOGGER.log(Level.SEVERE, "An error occurred during DB call: ==> " + e);
 		}
-		LOGGER.log(Level.INFO, "Updated one record in DB");
 	}
 
 	@Override
@@ -139,11 +139,16 @@ public class EmployeeDaoImpl implements EmployeeDao {
 		try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 			preparedStatement.setInt(1, employeeId);
 
-			preparedStatement.executeUpdate();
+			int affectedRecords = preparedStatement.executeUpdate();
+
+			if (affectedRecords > 0) {
+				LOGGER.log(Level.INFO, "Removed one record from DB");
+			} else {
+				LOGGER.log(Level.INFO, "Removed zero records from DB");
+			}
 
 		} catch (SQLException e) {
-			LOGGER.log(Level.INFO, "An error occurred during DB call: ==> " + e);
+			LOGGER.log(Level.SEVERE, "An error occurred during DB call: ==> " + e);
 		}
-		LOGGER.log(Level.INFO, "Removed one record from DB");
 	}
 }

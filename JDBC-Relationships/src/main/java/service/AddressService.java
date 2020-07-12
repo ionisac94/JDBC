@@ -39,10 +39,16 @@ public class AddressService {
 		return addressList;
 	}
 
-	public Optional<Address> getOneAddress(Integer id) {
+	public Address getOneAddress(Integer id) {
 		AddressDao addressDao = new AddressDaoImpl(connection);
 
-		return addressDao.getById(id);
+		Optional<Address> optionalAddress = addressDao.getById(id);
+
+		if (optionalAddress.get().getId() != null) {
+			return optionalAddress.get();
+		}else{
+			throw new NullPointerException("Address with id " + id + " is missing in DB");
+		}
 	}
 
 	public void updateOneAddress(Address address, Integer id) {

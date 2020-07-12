@@ -39,10 +39,16 @@ public class EmployeeService {
 		return employees;
 	}
 
-	public Optional<Employee> getOneEmployee(Integer id) {
+	public Employee getOneEmployee(Integer id) {
 		EmployeeDao employeeDao = new EmployeeDaoImpl(connection);
 
-		return employeeDao.getById(id);
+		Optional<Employee> optionalEmployee = employeeDao.getById(id);
+
+		if (optionalEmployee.get().getId() != null) {
+			return optionalEmployee.get();
+		} else {
+			throw new NullPointerException("Employee with id " + id + " is missing in DB");
+		}
 	}
 
 	public void updateOneEmployee(Employee employee) {
