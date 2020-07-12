@@ -17,7 +17,7 @@ public class Employee {
 
 	private String lastName;
 
-	private Date birthday;
+	private Date birthday; // YYYY-M-D
 
 	//one address to many employees
 	private Integer addressId;
