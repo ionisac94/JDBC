@@ -5,4 +5,4 @@ The application is divided in 3 layers: models, dao and service.
 
 # Database structure.
 
-![](/resources/db_structure.PNG)
+![](JDBC-Relationships/src/main/resources/db_structure.PNG)
